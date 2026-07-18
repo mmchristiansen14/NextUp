@@ -1,0 +1,52 @@
+body {
+    text-align: left;
+}
+
+/*group of headers and tasks*/
+.task-board {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+/*put header and task column as columns*/
+.group-column,
+.task-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/*put style header and task columns*/
+.group,
+.task {
+    padding: 15px;
+    border-radius: 15px;
+    height: 50px;
+    /*flex = make the columns horizontal*/
+    display: flex;
+    align-items: center;
+}
+
+.task {
+    width: 250px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.homework {
+    background-color: lightblue;
+}
+
+
+.exercise {
+    background-color: lightgreen;
+}
+
+
+.coding {
+    background-color: plum;
+}
