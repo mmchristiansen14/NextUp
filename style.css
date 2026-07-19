@@ -1,5 +1,7 @@
 body {
     text-align: left;
+    padding: 20px;
+    /*moves away from sides*/
 }
 
 /*group of headers and tasks*/
@@ -32,21 +34,50 @@ body {
     width: 250px;
     background-color: white;
     display: flex;
+    /*puts the stars on the right side*/
     justify-content: space-between;
     align-items: center;
 }
 
-
-.homework {
-    background-color: lightblue;
+/*creates a header to space out the title and description*/
+header {
+    margin-bottom: 30px;
 }
 
-
-.exercise {
-    background-color: lightgreen;
+/*the following three create separation bewteen the different sections*/
+.selected-task {
+    margin-bottom: 30px;
 }
 
+.add-task {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
 
-.coding {
-    background-color: plum;
+.task-board {
+    margin-top: 30px;
+}
+
+/*generate button is an id so must use # */
+#generate-button {
+    margin-top: 30px;
+}
+
+.star-selector {
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.star {
+    margin-right: 5px;
+}
+
+.star:hover {
+    cursor: pointer;
+    transform: scale(1.2);
 }

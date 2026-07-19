@@ -2,103 +2,77 @@
 <html lang="en">
 
 <head>
-    <! changes the word in the tab header>
-        <title>NextUp</title>
+    <!-- changes the word in the tab header-->
+    <title>NextUp</title>
 
-        <! connects style to page where rel is relationship and href is path to file>
-            <link rel="stylesheet" href="style.css">
+    <!-- connects style to page where rel is relationship and href is path to file-->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <! changes the word at the top of the web page>
-            <h1>NextUp</h1>
+        <!-- changes the word at the top of the web page-->
+        <h1>NextUp</h1>
 
-            <! adds a paragraph of text>
-                <p>Your weighted task randomizer.</p>
+        <!-- adds a paragraph of text-->
+        <p>Your weighted task randomizer.</p>
     </header>
 
+    <section class="add-task">
+
+        <h2>Add a Task</h2>
+
+        <!-- the hyphenated phrase creates the textbox-->
+        <input id="group-input" placeholder="Group">
+
+        <input id="task-input" placeholder="Task">
+
+        <div class="star-selector">
+
+            <p>Weight:</p>
+
+            <span class="star" data-value="1">☆</span>
+            <span class="star" data-value="2">☆</span>
+            <span class="star" data-value="3">☆</span>
+            <span class="star" data-value="4">☆</span>
+            <span class="star" data-value="5">☆</span>
+
+        </div>
+
+        <button id="add-button">
+            Add Task
+        </button>
+
+    </section>
+
+    <!--creates containers for information as columns-->
+    <div class="task-board">
+
+        <!-- this is my headers column and these are empty group placeholders-->
+        <div id="group-column">
+        </div>
+
+        <div id="task-column">
+        </div>
+
+    </div>
+
     <section>
-        <! creates a button (doesn't give it function) but id gives it a name>
-            <button id="generate-button">Generate Task</button>
+        <!-- creates a button (doesn't give it function) but id gives it a name -->
+        <button id="generate-button">Generate Task</button>
     </section>
 
     <div class="selected-task">
 
         <h2>Next Up:</h2>
 
-        <p id="selected-display">
+        <div id="selected-display">
             Nothing selected yet
-        </p>
+        </div>
 
     </div>
 
-    <!creates containers for information as columns>
-        <div class="task-board">
-
-            <! this is my headers column>
-                <div class="group-column">
-
-                    <div class="group homework">
-                        <p>Homework</p>
-                    </div>
-
-                    <div class="group homework">
-                        <p>Homework</p>
-                    </div>
-
-                    <div class="group exercise">
-                        <p>Exercise</p>
-                    </div>
-
-                    <div class="group coding">
-                        <p>Coding</p>
-                    </div>
-
-                </div>
-
-
-                <div class="task-column">
-
-                    <div class="task homework">
-
-                        <p>Read chapter 3</p>
-
-                        <div class="stars">
-                            ⭐⭐⭐⭐⭐
-                        </div>
-
-                    </div>
-
-                    <div class="task homework">
-                        <p>Finish problems</p>
-
-                        <div class="stars">
-                            ⭐⭐⭐⭐⭐
-                        </div>
-                    </div>
-
-                    <div class="task exercise">
-                        <p>Run 2 miles</p>
-
-                        <div class="stars">
-                            ⭐⭐⭐⭐⭐
-                        </div>
-                    </div>
-
-                    <div class="task coding">
-                        <p>Finish website</p>
-
-                        <div class="stars">
-                            ⭐⭐⭐⭐⭐
-                        </div>
-                    </div>
-
-                </div>
-
-        </div>
-
-        <script src="script.js"></script>
+    <script src="script.js"> </script>
 </body>
 
 </html>
