@@ -1,10 +1,13 @@
 
-//array list for added tasks
+//arrays for tasks, groups, ...
 let tasks = [];
+let groups = [];
 
 //variable to weight selection
 // it is let because it is a dynamic variable
 let selectedWeight = 0;
+//variable to color selection
+let selectedColor = "";
 
 //this is a function
 function generateTask() {
@@ -25,6 +28,7 @@ function generateTask() {
 }
 
 function displayTasks() {
+
     //getter for columns
     const taskColumn = document.getElementById("task-column");
     const groupColumn = document.getElementById("group-column");
@@ -35,6 +39,12 @@ function displayTasks() {
 
     //loop through all given tasks
     for (const task of tasks) {
+        //looks through every element of groups
+        //to find the name that matches task.group
+        //and saves it to the variable group
+        const group = groups.find(g => g.name === task.group);
+        //safe gaurd
+        const color = group ? group.color : "white";
 
         //variable to hold the weight (in stars)
         //.repeat tells the variable to repeat the char given the value of weight
@@ -42,7 +52,8 @@ function displayTasks() {
 
         //adds a new task to the existing column
         taskColumn.innerHTML += `
-        <div class="task ${task.group.toLowerCase()}">
+        <div class="task"
+            style="background-color: ${group.color}">
         <p>${task.task}</p>
         <div class="stars">
                 ${stars}
@@ -54,7 +65,8 @@ function displayTasks() {
         // ${...} calls and placeholds a specified object that is subject to change
 
         groupColumn.innerHTML += `
-        <div class="group ${task.group.toLowerCase()}">
+        <div class="group"
+            style="background-color: ${group.color}">
             <p>${task.group}</p>
         </div>
         `;
@@ -69,6 +81,77 @@ document
     .addEventListener("click", generateTask); //on click, run this function
 
 displayTasks();
+
+function displayGroups() {
+    const groupSelect = document.getElementById("group-select");
+    groupSelect.innerHTML = "";
+
+    //sets original to select a group
+    groupSelect.innerHTML = `
+        <option value="">
+            Select a Group
+        </option>
+    `;
+
+    //inner HTML is used for "drawing" something on the webpage
+    for (const group of groups) {
+        groupSelect.innerHTML += `
+        <option value="${group.name}">
+            ${group.name}
+        </option>
+    }
+    `;
+    }
+}
+
+document
+    .getElementById("new-group-button")
+    .addEventListener("click", createGroup);
+displayGroups();
+
+function createGroup() {
+    const groupPopup = document.getElementById("group-popup");
+    groupPopup.style.display = "flex";
+}
+
+//constructor function
+function saveGroup() {
+    const newGroupName = document.getElementById("new-group-name").value;
+
+    const newGroup = {
+        name: newGroupName,
+        color: selectedColor
+    };
+
+    //appends new group to array
+    groups.push(newGroup);
+
+    displayGroups();
+    closePopup();
+    document.getElementById("new-group-name").value = "";
+}
+
+document
+    .getElementById("create-group-button")
+    .addEventListener("click", saveGroup);
+
+const circles = document.querySelectorAll(".color-circle");
+
+circles.forEach(circle => {
+
+    circle.addEventListener("click", () => {
+
+        selectedColor = circle.dataset.color;
+
+        circles.forEach(c => {
+            c.classList.remove("selected-color");
+        });
+
+        circle.classList.add("selected-color");
+
+    });
+
+});
 
 //stores all possible stars in variable stars
 const stars = document.querySelectorAll(".star");
@@ -96,7 +179,7 @@ stars.forEach(star => {
 function addTask() {
 
     //.value asks for the user input
-    const group = document.getElementById("group-input").value;
+    const group = document.getElementById("group-select").value;
     const taskName = document.getElementById("task-input").value;
 
     //creates new task variable storage format
@@ -112,7 +195,7 @@ function addTask() {
     displayTasks();
 
     //reset the input boxes and stars
-    document.getElementById("group-input").value = "";
+    document.getElementById("group-select").value = "";
     document.getElementById("task-input").value = "";
 
     selectedWeight = 0;
@@ -121,7 +204,19 @@ function addTask() {
     });
 }
 
+function closePopup() {
+
+    document.getElementById("group-popup").style.display = "none";
+
+}
+
+//listener for close button on popup
+document
+    .getElementById("close-popup")
+    .addEventListener("click", closePopup);
+
 //listener which runs function to add a task
 document
     .getElementById("add-button")
     .addEventListener("click", addTask);
+

@@ -60,6 +60,12 @@ header {
     margin-top: 30px;
 }
 
+.group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 /*generate button is an id so must use # */
 #generate-button {
     margin-top: 30px;
@@ -80,4 +86,70 @@ header {
 .star:hover {
     cursor: pointer;
     transform: scale(1.2);
+}
+
+#group-popup {
+    background-color: rgba(0, 0, 0, .4);
+    display: none;
+
+    /*fixed tells page to ignore layout and place in a specific location*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.popup-content {
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.color-palette {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 5px;
+}
+
+.selected-color {
+    border: 5px solid lightgray;
+}
+
+.blue {
+    background-color: #8ecae6;
+}
+
+.green {
+    background-color: #90be6d;
+}
+
+.purple {
+    background-color: #c77dff;
+}
+
+.yellow {
+    background-color: #ffd166;
+}
+
+.red {
+    background-color: #ef476f;
+}
+
+.orange {
+    background-color: #ff9f1c;
 }

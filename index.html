@@ -22,9 +22,24 @@
 
         <h2>Add a Task</h2>
 
-        <!-- the hyphenated phrase creates the textbox-->
-        <input id="group-input" placeholder="Group">
+        <div class="group-container">
 
+            <button id="new-group-button">
+                + New Group
+            </button>
+
+            <!-- the hypenated select creates the dropdown -->
+            <select id="group-select">
+
+                <option value="">
+                    Select a Group
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- the hyphenated input creates the textbox-->
         <input id="task-input" placeholder="Task">
 
         <div class="star-selector">
@@ -68,6 +83,39 @@
 
         <div id="selected-display">
             Nothing selected yet
+        </div>
+
+    </div>
+
+    <div id="group-popup">
+
+        <div class="popup-content">
+
+            <button id="close-popup">✕</button>
+
+            <h2>Create New Group</h2>
+
+            <input id="new-group-name" placeholder="Group Name">
+
+            <h3>Choose a Color</h3>
+
+            <div class="color-palette">
+                <div class="color-circle blue" data-color="#8ecae6"></div>
+                <div class="color-circle green" data-color="#90be6d"></div>
+
+                <div class="color-circle purple" data-color="#c77dff"></div>
+
+                <div class="color-circle yellow" data-color="#ffd166"></div>
+
+                <div class="color-circle red" data-color="#ef476f"></div>
+
+                <div class="color-circle orange" data-color="#ff9f1c"></div>
+            </div>
+
+            <button id="create-group-button">
+                Create Group
+            </button>
+
         </div>
 
     </div>
