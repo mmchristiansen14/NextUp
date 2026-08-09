@@ -1,8 +1,32 @@
-
+//global variables
 //arrays for tasks, groups, ...
-let tasks = [];
-let groups = [];
+let tasks;
+let groups;
 let nextTaskId = 1;
+const checkboxColumn = document.getElementById("checkbox-column");
+
+//dont let tasks inside if bc of scope
+if (localStorage.getItem("tasks") != null) {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+
+    for (const task of tasks) {
+        task.id = nextTaskId++;
+    }
+
+    for (const task of tasks) {
+        if (task.id > nextTaskId) {
+            nextTaskId = task.id + 1;
+        }
+    }
+} else {
+    tasks = [];
+}
+
+if (localStorage.getItem("groups") != null) {
+    groups = JSON.parse(localStorage.getItem("groups"));
+} else {
+    groups = [];
+}
 
 //variable to weight selection
 // it is let because it is a dynamic variable
@@ -51,7 +75,6 @@ function displayTasks() {
     //getter for columns
     const taskColumn = document.getElementById("task-column");
     const groupColumn = document.getElementById("group-column");
-    const checkboxColumn = document.getElementById("checkbox-column");
 
     //start with empty columns
     taskColumn.innerHTML = "";
@@ -73,21 +96,11 @@ function displayTasks() {
 
         //adds a checkbox for each row
         checkboxColumn.innerHTML += `<input type="checkbox" data-task-id="${task.id}" ${task.completed ? "checked" : ""}>`;
-        //event listener
-        checkboxColumn.addEventListener("change", function (event) {
-            const taskId = Number(event.target.dataset.taskId);
-            //the parenthese functions like a conditional; it goes through every id to find oneidentical
-            const clickedTask = tasks.find(t => t.id === taskId);
-            clickedTask.completed = event.target.checked;
-            displayTasks();
-            //to test
-            //console.log(clickedTask);
-        });
 
         //adds a new task to the existing column
         taskColumn.innerHTML += `
         <div class="task"
-            style="background-color: ${task.completed ? "lightgray" : group.color}">
+            style="background-color: ${task.completed ? "lightgray" : color}">
             <p>${task.task}</p>
         <div class="stars">
                 ${stars}
@@ -108,6 +121,22 @@ function displayTasks() {
         // to call the different groups of a task (task, weight, group)
     }
 }
+
+//event listener
+//dont put inside for loop cause only need one
+checkboxColumn.addEventListener("change", function (event) {
+    const taskId = Number(event.target.dataset.taskId);
+    //the parenthese functions like a conditional; it goes through every id to find oneidentical
+    const clickedTask = tasks.find(t => t.id === taskId);
+    clickedTask.completed = event.target.checked;
+    //save the tasks to local storage
+    //JSON.stringify makes tasks array into string bc local storage only reads strings
+    //.setItem saves string under a key ("tasks")
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    displayTasks();
+    //to test
+    //console.log(clickedTask);
+});
 
 //document relates to the webpage itself
 document
@@ -159,6 +188,7 @@ function saveGroup() {
 
     //appends new group to array
     groups.push(newGroup);
+    localStorage.setItem("groups", JSON.stringify(groups));
 
     displayGroups();
     closePopup();
@@ -227,6 +257,7 @@ function addTask() {
 
     //creates the new task
     tasks.push(newTask);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 
     displayTasks();
 
