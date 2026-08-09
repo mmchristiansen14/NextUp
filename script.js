@@ -2,6 +2,7 @@
 //arrays for tasks, groups, ...
 let tasks = [];
 let groups = [];
+let nextTaskId = 1;
 
 //variable to weight selection
 // it is let because it is a dynamic variable
@@ -11,31 +12,51 @@ let selectedColor = "";
 
 //this is a function
 function generateTask() {
+    //array to make task weights
+    const weightedTasks = [];
 
-    //creates a random decimal, applies it to task list, and rounds down
-    const randomIndex = Math.floor(Math.random() * tasks.length);
+    //loop through all tasks
+    for (const task of tasks) {
+        if (task.completed === false) {
+            //repeat the task based on its weight
+            for (let i = 0; i < task.weight; i++) {
+                //adds the object to the array
+                weightedTasks.push(task);
+            }
+        }
+    }
 
-    //grabs element out of task array
-    const selectedTask = tasks[randomIndex];
+    if (weightedTasks.length > 0) {
+        //creates a random decimal, applies it to task list, and rounds down
+        const randomIndex = Math.floor(Math.random() * weightedTasks.length);
 
-    //prints information in the developer console
-    //you can view this in inspect when you right click
-    //console.log(selectedTask);
+        //grabs element out of task array
+        const selectedTask = weightedTasks[randomIndex];
 
-    //puts the information in the specified element
-    document.getElementById("selected-display").innerHTML =
-        `<strong>${selectedTask.group}</strong><br>${selectedTask.task}`;
+        //prints information in the developer console
+        //you can view this in inspect when you right click
+        //console.log(selectedTask);
+
+        //puts the information in the specified element
+        document.getElementById("selected-display").innerHTML =
+            `<strong>${selectedTask.group}</strong><br>${selectedTask.task}`;
+    } else {
+        //.textContent puts plain text in an element
+        document.getElementById("selected-display").textContent =
+            "Add a task to get started!";
+    }
 }
 
 function displayTasks() {
-
     //getter for columns
     const taskColumn = document.getElementById("task-column");
     const groupColumn = document.getElementById("group-column");
+    const checkboxColumn = document.getElementById("checkbox-column");
 
     //start with empty columns
     taskColumn.innerHTML = "";
     groupColumn.innerHTML = "";
+    checkboxColumn.innerHTML = "";
 
     //loop through all given tasks
     for (const task of tasks) {
@@ -50,11 +71,24 @@ function displayTasks() {
         //.repeat tells the variable to repeat the char given the value of weight
         const stars = "⭐".repeat(task.weight);
 
+        //adds a checkbox for each row
+        checkboxColumn.innerHTML += `<input type="checkbox" data-task-id="${task.id}" ${task.completed ? "checked" : ""}>`;
+        //event listener
+        checkboxColumn.addEventListener("change", function (event) {
+            const taskId = Number(event.target.dataset.taskId);
+            //the parenthese functions like a conditional; it goes through every id to find oneidentical
+            const clickedTask = tasks.find(t => t.id === taskId);
+            clickedTask.completed = event.target.checked;
+            displayTasks();
+            //to test
+            //console.log(clickedTask);
+        });
+
         //adds a new task to the existing column
         taskColumn.innerHTML += `
         <div class="task"
-            style="background-color: ${group.color}">
-        <p>${task.task}</p>
+            style="background-color: ${task.completed ? "lightgray" : group.color}">
+            <p>${task.task}</p>
         <div class="stars">
                 ${stars}
             </div>
@@ -66,7 +100,7 @@ function displayTasks() {
 
         groupColumn.innerHTML += `
         <div class="group"
-            style="background-color: ${group.color}">
+            style="background-color: ${task.completed ? "lightgray" : color}">
             <p>${task.group}</p>
         </div>
         `;
@@ -186,7 +220,9 @@ function addTask() {
     const newTask = {
         group: group,
         task: taskName,
-        weight: selectedWeight
+        weight: selectedWeight,
+        completed: false,
+        id: nextTaskId++
     };
 
     //creates the new task
