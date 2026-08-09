@@ -4,14 +4,16 @@ let tasks;
 let groups;
 let nextTaskId = 1;
 const checkboxColumn = document.getElementById("checkbox-column");
+const deleteColumn = document.getElementById("delete-column");
 
 //dont let tasks inside if bc of scope
 if (localStorage.getItem("tasks") != null) {
     tasks = JSON.parse(localStorage.getItem("tasks"));
 
-    for (const task of tasks) {
-        task.id = nextTaskId++;
-    }
+    //fix if tasks get duplicate id numbers
+    //for (const task of tasks) {
+    //    task.id = nextTaskId++;
+    //}
 
     for (const task of tasks) {
         if (task.id > nextTaskId) {
@@ -80,6 +82,7 @@ function displayTasks() {
     taskColumn.innerHTML = "";
     groupColumn.innerHTML = "";
     checkboxColumn.innerHTML = "";
+    deleteColumn.innerHTML = "";
 
     //loop through all given tasks
     for (const task of tasks) {
@@ -119,6 +122,10 @@ function displayTasks() {
         `;
         // task. acts as an access modifier 
         // to call the different groups of a task (task, weight, group)
+
+        deleteColumn.innerHTML += `
+        <button class="delete-column" data-task-id="${task.id}">🗑️</button>
+        `;
     }
 }
 
@@ -136,6 +143,13 @@ checkboxColumn.addEventListener("change", function (event) {
     displayTasks();
     //to test
     //console.log(clickedTask);
+});
+
+deleteColumn.addEventListener("click", function (event) {
+    const taskId = Number(event.target.dataset.taskId);
+    tasks = tasks.filter(t => t.id !== taskId);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    displayTasks();
 });
 
 //document relates to the webpage itself
