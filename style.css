@@ -22,13 +22,15 @@ body {
 
 /*deals with container*/
 #checkbox-column,
-#delete-column {
+#delete-column,
+#edit-column {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.delete-column {
+.delete-column,
+.edit-column {
     background: none;
     border: none;
     padding: 0;
@@ -38,7 +40,8 @@ body {
 
 /*deals with elements in container*/
 #checkbox-column input,
-#delete-column button {
+#delete-column button,
+#edit-column button {
     margin: 30px 0;
 }
 

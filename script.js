@@ -3,8 +3,11 @@
 let tasks;
 let groups;
 let nextTaskId = 1;
+let editingTaskId = null;
+//constants for columns
 const checkboxColumn = document.getElementById("checkbox-column");
 const deleteColumn = document.getElementById("delete-column");
+const editColumn = document.getElementById("edit-column");
 
 //dont let tasks inside if bc of scope
 if (localStorage.getItem("tasks") != null) {
@@ -83,6 +86,7 @@ function displayTasks() {
     groupColumn.innerHTML = "";
     checkboxColumn.innerHTML = "";
     deleteColumn.innerHTML = "";
+    editColumn.innerHTML = "";
 
     //loop through all given tasks
     for (const task of tasks) {
@@ -123,6 +127,10 @@ function displayTasks() {
         // task. acts as an access modifier 
         // to call the different groups of a task (task, weight, group)
 
+        editColumn.innerHTML += `
+        <button class="edit-column" data-task-id="${task.id}">✏️</button>
+        `;
+
         deleteColumn.innerHTML += `
         <button class="delete-column" data-task-id="${task.id}">🗑️</button>
         `;
@@ -150,6 +158,49 @@ deleteColumn.addEventListener("click", function (event) {
     tasks = tasks.filter(t => t.id !== taskId);
     localStorage.setItem("tasks", JSON.stringify(tasks));
     displayTasks();
+});
+
+editColumn.addEventListener("click", function (event) {
+    //set up
+    const taskId = Number(event.target.dataset.taskId);
+    const clickedTask = tasks.find(t => t.id === taskId);
+
+    if (editingTaskId === taskId) {
+        //reset all standards
+        document.getElementById("group-select").value = "";
+        document.getElementById("task-input").value = "";
+
+        selectedWeight = 0;
+
+        stars.forEach(star => {
+            star.textContent = "☆";
+        });
+
+        editingTaskId = null;
+
+        displayTasks();
+    } else {
+        //actually editing the task
+        editingTaskId = taskId;
+        //document searches on current page, get element id locates the input box, .value puts info in
+        //this framework is used for single elements
+        document.getElementById("task-input").value = clickedTask.task;
+        document.getElementById("group-select").value = clickedTask.group;
+        document.getElementById("add-button").textContent = "Save Changes";
+        //this framework is used for multiple elements
+        //finds all stars possible and change based on weight
+        const stars = document.querySelectorAll(".star");
+        for (const star of stars) {
+            if (Number(star.dataset.value) <= clickedTask.weight) {
+                star.textContent = "⭐";
+            } else {
+                star.textContent = "☆";
+            }
+        }
+        //saving the information
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        displayTasks();
+    }
 });
 
 //document relates to the webpage itself
@@ -255,22 +306,35 @@ stars.forEach(star => {
 });
 
 function addTask() {
+    //to test
+    //console.log("editingTaskId:", editingTaskId);
 
     //.value asks for the user input
     const group = document.getElementById("group-select").value;
     const taskName = document.getElementById("task-input").value;
 
-    //creates new task variable storage format
-    const newTask = {
-        group: group,
-        task: taskName,
-        weight: selectedWeight,
-        completed: false,
-        id: nextTaskId++
-    };
+    if (editingTaskId === null) {
+        //creates new task variable storage format
+        const newTask = {
+            group: group,
+            task: taskName,
+            weight: selectedWeight,
+            completed: false,
+            id: nextTaskId++
+        };
 
-    //creates the new task
-    tasks.push(newTask);
+        //creates the new task
+        tasks.push(newTask);
+    } else {
+        const taskToEdit = tasks.find(t => t.id === editingTaskId);
+
+        taskToEdit.group = group;
+        taskToEdit.task = taskName;
+        taskToEdit.weight = selectedWeight;
+
+        editingTaskId = null;
+    }
+
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
     displayTasks();
@@ -278,6 +342,7 @@ function addTask() {
     //reset the input boxes and stars
     document.getElementById("group-select").value = "";
     document.getElementById("task-input").value = "";
+    document.getElementById("add-button").textContent = "Add Task";
 
     selectedWeight = 0;
     stars.forEach(star => {
