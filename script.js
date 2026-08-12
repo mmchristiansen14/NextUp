@@ -52,8 +52,13 @@ function generateTask() {
     //loop through all tasks
     for (const task of tasks) {
         if (task.completed === false) {
+            //find group task belongs to
+            const group = groups.find(g => g.name === task.group);
+            const combinedWeight = group.weight * task.weight;
+            //for example if its a 5x weight group and a 5x weighted object = 25
+
             //repeat the task based on its weight
-            for (let i = 0; i < task.weight; i++) {
+            for (let i = 0; i < combinedWeight; i++) {
                 //adds the object to the array
                 weightedTasks.push(task);
             }

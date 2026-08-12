@@ -1,9 +1,20 @@
+/*the whole webpage*/
+
+body {
+    text-align: left;
+    padding: 20px;
+    /*moves away from sides*/
+    background-color: hsl(36, 42%, 86%);
+}
+
+/*letter display*/
 .logo {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 25px;
+    gap: 26px;
+    margin-bottom: 45px;
+
 }
 
 .logo-letter {
@@ -12,71 +23,64 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
+    padding: 15px;
     border-radius: 10px;
-    font-size: 28px;
+    font-size: 50px;
     font-weight: bold;
 }
 
 .logo-letter.letter-n {
     background-color: #DCC9AD;
     color: #C34F55;
-    font-size: 35px;
+    margin-top: 15px;
 }
 
 
 .logo-letter.letter-e {
     background-color: #E1D3B8;
     color: #51858B;
-    font-size: 35px;
+    margin-top: 35px;
 }
 
 
 .logo-letter.letter-x {
     background-color: #C8D09F;
     color: #A65259;
-    font-size: 35px;
+    margin-top: 5px;
 }
 
 
 .logo-letter.letter-t {
     background-color: #D9B47A;
     color: #527A68;
-    font-size: 35px;
+    margin-top: 20px;
 }
 
 
 .logo-letter.letter-u {
     background-color: #D2B8C4;
     color: #D27A42;
-    font-size: 35px;
+    margin-top: 35px;
 }
 
 
 .logo-letter.letter-p {
     background-color: #B8C9C5;
     color: #66546A;
-    font-size: 35px;
+    margin-top: 5px;
 }
 
-.next-task-display {
-    background-color: #f5b2aa;
-    color: #d63f47;
-}
+/*next task display*/
 
 #generate-button {
     background-color: #d63f47;
     color: #F8E6D2;
 }
 
-body {
-    text-align: left;
-    padding: 20px;
-    /*moves away from sides*/
-}
-
 .next-task-display {
-    padding: 15px;
+    background-color: #f5b2aa;
+    color: #d63f47;
+    padding: 10px;
     margin-bottom: 30px;
     width: 300px;
     border-radius: 15px;
@@ -88,6 +92,14 @@ body {
     width: 40%;
     max-width: 700px;
     margin: 0 auto;
+    margin-top: 10px;
+}
+
+#selected-display {
+    background-color: #f4f1c2;
+    border-radius: 15px;
+    padding: 15px;
+    font-size: 20px;
 }
 
 /*row 2*/
@@ -135,7 +147,7 @@ body {
 .add-task h2,
 .groups-box h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 30px;
     margin-bottom: 0px;
 }
 
@@ -166,6 +178,8 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 30px;
+    font-size: 18px;
+    margin-top: 10px;
 }
 
 .group-item p {
@@ -199,6 +213,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    font-size: 18px;
 }
 
 /*deals with container*/
@@ -375,10 +390,12 @@ header {
 
 .blue {
     background-color: #B8C9C5;
+    color: #66546A;
 }
 
 .green {
     background-color: #C8D09F;
+    color: #A65259;
 }
 
 .purple {
