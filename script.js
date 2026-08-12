@@ -4,10 +4,14 @@ let tasks;
 let groups;
 let nextTaskId = 1;
 let editingTaskId = null;
+let editingGroupName = null;
+
+
 //constants for columns
 const checkboxColumn = document.getElementById("checkbox-column");
 const deleteColumn = document.getElementById("delete-column");
 const editColumn = document.getElementById("edit-column");
+const groupColumn = document.getElementById("group-box-column");
 
 //dont let tasks inside if bc of scope
 if (localStorage.getItem("tasks") != null) {
@@ -36,6 +40,7 @@ if (localStorage.getItem("groups") != null) {
 //variable to weight selection
 // it is let because it is a dynamic variable
 let selectedWeight = 0;
+let selectedGroupWeight = 0;
 //variable to color selection
 let selectedColor = "";
 
@@ -198,7 +203,7 @@ editColumn.addEventListener("click", function (event) {
             }
         }
         //saving the information
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        localStorage.setItem("groups", JSON.stringify(groups));
         displayTasks();
     }
 });
@@ -221,16 +226,90 @@ function displayGroups() {
         </option>
     `;
 
-    //inner HTML is used for "drawing" something on the webpage
-    for (const group of groups) {
+    //sorts the groups by weight
+    const sortedGroups = [...groups].sort((a, b) => b.weight - a.weight);
+
+    //draws groups in dropdown
+    for (const group of sortedGroups) {
         groupSelect.innerHTML += `
-        <option value="${group.name}">
-            ${group.name}
-        </option>
+            <option value="${group.name}">
+                ${group.name}
+            </option>
+        `;
     }
+
+    //draws groups in the Groups box
+    const groupColumn = document.getElementById("group-box-column");
+    groupColumn.innerHTML = "";
+
+    for (const group of sortedGroups) {
+        groupColumn.innerHTML += `
+        <div class="group-item">
+            <p>${group.name} ${"⭐".repeat(group.weight)}</p>
+
+            <div class="group-buttons">
+                <button class="delete-group" data-group-name="${group.name}">🗑️</button>
+                <button class="edit-group" data-group-name="${group.name}">✏️</button>
+            </div>
+        </div>
     `;
     }
 }
+
+groupColumn.addEventListener("click", function (event) {
+    if (event.target.classList.contains("delete-group")) {
+
+        const groupName = event.target.dataset.groupName;
+
+        groups = groups.filter(group => group.name !== groupName);
+
+        tasks = tasks.filter(task => task.group !== groupName);
+
+        localStorage.setItem("groups", JSON.stringify(groups));
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+
+        displayGroups();
+        displayTasks();
+    }
+});
+
+groupColumn.addEventListener("click", function (event) {
+    if (event.target.classList.contains("edit-group")) {
+        //set up
+        const groupName = event.target.dataset.groupName;
+        const clickedGroup = groups.find(g => g.name === groupName);
+        editingGroupName = groupName;
+
+        // open popup
+        createGroup();
+        document.getElementById("new-group-name").value = clickedGroup.name;
+
+        const groupStars = document.querySelectorAll(".group-star");
+
+        for (const groupStar of groupStars) {
+            if (Number(groupStar.dataset.value) <= clickedGroup.weight) {
+                groupStar.textContent = "⭐";
+            } else {
+                groupStar.textContent = "☆";
+            }
+        }
+
+        const circles = document.querySelectorAll(".color-circle");
+        for (const circle of circles) {
+            if (circle.dataset.color === clickedGroup.color) {
+                circle.classList.add("selected-color");
+            } else {
+                circle.classList.remove("selected-color");
+            }
+        }
+
+        //saving the information
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        displayTasks();
+    }
+
+});
+
 
 document
     .getElementById("new-group-button")
@@ -240,24 +319,71 @@ displayGroups();
 function createGroup() {
     const groupPopup = document.getElementById("group-popup");
     groupPopup.style.display = "flex";
+
+    if (editingGroupName === null) {
+        document.getElementById("new-group-name").value = "";
+
+        selectedGroupWeight = 0;
+
+        const groupStars = document.querySelectorAll(".group-star");
+
+        for (const groupStar of groupStars) {
+            groupStar.textContent = "☆";
+        }
+
+        selectedColor = "";
+
+        const circles = document.querySelectorAll(".color-circle");
+
+        for (const circle of circles) {
+            circle.classList.remove("selected-color");
+        }
+    }
 }
 
 //constructor function
 function saveGroup() {
     const newGroupName = document.getElementById("new-group-name").value;
 
-    const newGroup = {
-        name: newGroupName,
-        color: selectedColor
-    };
+    if (editingGroupName === null) {
+        const newGroup = {
+            name: newGroupName,
+            color: selectedColor,
+            weight: selectedGroupWeight
+        };
 
-    //appends new group to array
-    groups.push(newGroup);
-    localStorage.setItem("groups", JSON.stringify(groups));
+        //appends new group to array
+        groups.push(newGroup);
+        localStorage.setItem("groups", JSON.stringify(groups));
 
-    displayGroups();
-    closePopup();
-    document.getElementById("new-group-name").value = "";
+        displayGroups();
+        closePopup();
+        document.getElementById("new-group-name").value = "";
+
+    } else {
+        const oldGroupName = editingGroupName;
+
+        const clickedGroup = groups.find(g => g.name === editingGroupName);
+
+        clickedGroup.name = newGroupName;
+        clickedGroup.color = selectedColor;
+        clickedGroup.weight = selectedGroupWeight;
+
+        for (const task of tasks) {
+            if (task.group === oldGroupName) {
+                task.group = newGroupName;
+            }
+        }
+
+        localStorage.setItem("groups", JSON.stringify(groups));
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+
+        displayGroups();
+        displayTasks();
+        closePopup();
+
+        editingGroupName = null;
+    }
 }
 
 document
@@ -295,6 +421,28 @@ stars.forEach(star => {
         //means when you click on a star, do this
         stars.forEach(s => {
             if (s.dataset.value <= selectedWeight) {
+                s.textContent = "⭐";
+            } else {
+                s.textContent = "☆";
+            }
+        });
+
+    });
+
+});
+
+const groupStars = document.querySelectorAll(".group-star");
+
+groupStars.forEach(groupStar => {
+
+    groupStar.addEventListener("click", () => {
+
+        //gets weight from stored star value
+        selectedGroupWeight = Number(groupStar.dataset.value);
+
+        //means when you click on a star, do this
+        groupStars.forEach(s => {
+            if (s.dataset.value <= selectedGroupWeight) {
                 s.textContent = "⭐";
             } else {
                 s.textContent = "☆";

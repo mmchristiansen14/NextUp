@@ -1,8 +1,189 @@
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 25px;
+}
+
+.logo-letter {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.logo-letter.letter-n {
+    background-color: #DCC9AD;
+    color: #C34F55;
+    font-size: 35px;
+}
+
+
+.logo-letter.letter-e {
+    background-color: #E1D3B8;
+    color: #51858B;
+    font-size: 35px;
+}
+
+
+.logo-letter.letter-x {
+    background-color: #C8D09F;
+    color: #A65259;
+    font-size: 35px;
+}
+
+
+.logo-letter.letter-t {
+    background-color: #D9B47A;
+    color: #527A68;
+    font-size: 35px;
+}
+
+
+.logo-letter.letter-u {
+    background-color: #D2B8C4;
+    color: #D27A42;
+    font-size: 35px;
+}
+
+
+.logo-letter.letter-p {
+    background-color: #B8C9C5;
+    color: #66546A;
+    font-size: 35px;
+}
+
+.next-task-display {
+    background-color: #f5b2aa;
+    color: #d63f47;
+}
+
+#generate-button {
+    background-color: #d63f47;
+    color: #F8E6D2;
+}
+
 body {
     text-align: left;
     padding: 20px;
     /*moves away from sides*/
 }
+
+.next-task-display {
+    padding: 15px;
+    margin-bottom: 30px;
+    width: 300px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    /*makes it centered*/
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/*row 2*/
+
+.row2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.add-task {
+    background-color: #C8D09F;
+    color: #527A68;
+    padding: 15px;
+    margin-bottom: 30px;
+    width: 300px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    /*makes it centered*/
+
+    align-items: center;
+    width: 40%;
+    max-width: 700px;
+    margin-top: 10px;
+}
+
+
+#add-button,
+#group-select,
+#task-input {
+    background-color: #E1D3B8;
+    color: #51858B;
+}
+
+/*choose weight*/
+.add-task p1 {
+    margin: 0;
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+
+.add-task h2,
+.groups-box h2 {
+    margin: 0;
+    font-size: 24px;
+    margin-bottom: 0px;
+}
+
+.groups-box {
+    background-color: #B8C9C5;
+    color: #51858B;
+    padding: 15px;
+    margin-bottom: 30px;
+    width: 300px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    /*makes it centered*/
+    align-items: center;
+    width: 40%;
+    max-width: 700px;
+    margin-top: 10px;
+}
+
+#group-box-column {
+    gap: 2px;
+    line-height: 1.2;
+}
+
+.group-item {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.group-item p {
+    margin: 0;
+}
+
+.group-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+#new-group-button {
+    background-color: #E1D3B8;
+    color: #51858B;
+    margin-top: 10px;
+}
+
+/*end row 2*/
 
 /*group of headers and tasks*/
 .task-board {
@@ -38,6 +219,16 @@ body {
     font-size: 20px;
 }
 
+.delete-group,
+.edit-group {
+    display: row;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 20px;
+}
+
 /*deals with elements in container*/
 #checkbox-column input,
 #delete-column button,
@@ -54,6 +245,15 @@ body {
     /*flex = make the columns horizontal*/
     display: flex;
     align-items: center;
+}
+
+#create-group-button {
+    margin-top: 15px;
+}
+
+#group-popup h3 {
+    margin-top: 3px;
+    margin-bottom: 5px;
 }
 
 .task {
@@ -94,10 +294,11 @@ header {
 
 /*generate button is an id so must use # */
 #generate-button {
-    margin-top: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.star-selector {
+.group-star-selector {
     font-size: 20px;
     cursor: pointer;
     display: flex;
@@ -105,11 +306,28 @@ header {
     gap: 5px;
 }
 
-.star {
+.star-selector {
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    margin-top: 0px;
+}
+
+.group-star-selector {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.star,
+.group-star {
     margin-right: 5px;
 }
 
-.star:hover {
+.star:hover,
+.group-star:hover {
     cursor: pointer;
     transform: scale(1.2);
 }
@@ -117,7 +335,6 @@ header {
 #group-popup {
     background-color: rgba(0, 0, 0, .4);
     display: none;
-
     /*fixed tells page to ignore layout and place in a specific location*/
     position: fixed;
     top: 0;
@@ -157,25 +374,25 @@ header {
 }
 
 .blue {
-    background-color: #8ecae6;
+    background-color: #B8C9C5;
 }
 
 .green {
-    background-color: #90be6d;
+    background-color: #C8D09F;
 }
 
 .purple {
-    background-color: #c77dff;
-}
-
-.yellow {
-    background-color: #ffd166;
+    background-color: #D2B8C4;
 }
 
 .red {
-    background-color: #ef476f;
+    background-color: #C34F55;
 }
 
 .orange {
-    background-color: #ff9f1c;
+    background-color: #D27A42;
+}
+
+.yellow {
+    background-color: #D9B47A;
 }
