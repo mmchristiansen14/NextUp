@@ -297,6 +297,16 @@ header {
     margin-bottom: 30px;
 }
 
+#group-column {
+    color: #51858B;
+    font-weight: 500;
+}
+
+#task-column {
+    color: #527A68;
+    font-weight: 500;
+}
+
 .task-board {
     margin-top: 30px;
 }
@@ -403,13 +413,13 @@ header {
 }
 
 .red {
-    background-color: #C34F55;
-}
-
-.orange {
-    background-color: #D27A42;
+    background-color: #f5b2aa;
 }
 
 .yellow {
+    background-color: #f4f1c2;
+}
+
+.orange {
     background-color: #D9B47A;
 }
